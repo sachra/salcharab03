@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>عمالك في متناول يدك</title>
+</head>
+        
+
+<body>
+
+    <!-- رأس الصفحة -->
+    <header>
+        <div class="title">
+            <img class="logo" src="Leonardo_Phoenix_Key_elementsOpen_hand_symbolizes_providing_he_2.png" alt="">
+            <h1>عمالك في متناول يدك</h1>
+            <ul>
+                <li><a href="#services">الخدمات</a></li>
+                <li><a href="#about">من نحن</a></li>
+                <li><a href="#contact">تواصل معنا</a></li>
+                <li><a href="#location">موقعنا</a></li>
+            </ul>
+        </div>
+        
+        
+    </header>
+
+    <!-- محتوى الصفحة -->
+    <main>
+        <section id="home">
+            <h2>مرحبًا بكم في عمالك في متناول يدك!</h2>
+            <p>هدفنا هو تسهيل عملية الوصول إلى الخدمات المتنوعة التي يحتاجها الأفراد والشركات. من خلال موقعنا، يمكنك نشر خدماتك أو البحث عن عمال في مختلف التخصصات.</p>
+            <button onclick="toggleDisplay('register')">نشر مهنة العامل</button>
+            <button onclick="toggleDisplay('search')">البحث عن عامل</button>
+        </section>
+
+        <!-- نموذج تسجيل العمال -->
+        <section id="register" style="display: none;">
+            <h2>تسجيل العامل</h2>
+            <form id="workerRegisterForm">
+                <input type="text" id="workerName" placeholder="اسم العامل" required>
+                <input type="text" id="workerProfession" placeholder="المهنة" required>
+                <input type="text" id="workerCity" placeholder="المدينة" required>
+                <input type="tel" id="workerPhone" placeholder="رقم الهاتف" required>
+        
+                <!-- حقل التقييم -->
+                <label for="workerRating">التقييم (من 1 إلى 5):</label>
+                <select id="workerRating" required>
+                    <option value="1">1 - ضعيف</option>
+                    <option value="2">2 - مقبول</option>
+                    <option value="3">3 - جيد</option>
+                    <option value="4">4 - جيد جدًا</option>
+                    <option value="5">5 - ممتاز</option>
+                </select>
+        
+                <p id="workerError" style="display:none;">الرجاء ملء جميع الحقول بشكل صحيح.</p>
+                <button type="submit">تسجيل</button>
+                <p id="workerSuccess" style="display:none;">تم تسجيل العامل بنجاح!</p>
+            </form>
+        </section>                
+
+        <!-- نموذج البحث عن العمال -->
+        <section id="search" style="display: none;">
+            <h2>البحث عن عامل</h2>
+            <input type="text" id="searchTerm" placeholder="أدخل المهنة للبحث">
+            <button onclick="searchWorkers()">بحث</button>
+            <div id="searchResults"></div>
+        </section>
+
+        <section id="about">
+            <h2>من نحن</h2>
+            <p>عمالك في متناول يدك هو موقع يهدف إلى تسهيل عملية الوصول إلى الخدمات المتنوعة التي يحتاجها الأفراد والشركات على حد سواء. نحن نعمل على توفير منصة موثوقة وسهلة الاستخدام لتسهيل التواصل بين العمال والعملاء.</p>
+            <div class="image-container">
+                <img src="https://i.postimg.cc/1gT5jRtS/openart-image-es-Ry-ILRI-1729988623327-raw.jpg" alt="صورة 1">
+                <img src="https://i.postimg.cc/06rynK9Z/openart-image-e-TVOH6q-W-1729988696246-raw.jpg" alt="صورة 2">
+                <img src="https://i.postimg.cc/75KLSnrf/openart-image-m-EG2-ftx-1729988702411-raw.jpg" alt="صورة 3">
+                <img src="https://i.postimg.cc/zyzBLPMs/openart-image-Ox2-Bly7i-1729988840117-raw.jpg" alt="صورة 4">
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>تواصل معنا</h2>
+            <form id="contactForm">
+                <input type="text" id="name" placeholder="اسمك" required>
+                <input type="email" id="email" placeholder="بريدك الإلكتروني" required>
+                <textarea id="message" placeholder="رسالتك" required></textarea>
+                <p id="contactError" style="display:none;">الرجاء ملء جميع الحقول بشكل صحيح.</p>
+                <button type="submit">إرسال</button>
+                <p id="contactSuccess" style="display:none;">تم إرسال رسالتك بنجاح!</p>
+            </form>
+        </section>
+        
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+        <script>
+            // تهيئة EmailJS باستخدام User ID الخاص بك
+            emailjs.init("KEf4eYfoNEPRc_9lCi_SR"); // معرف المستخدم
+        
+            document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // الحصول على القيم من الحقول
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    // التحقق من ملء جميع الحقول
+    if (!name || !email || !message) {
+        document.getElementById('contactError').style.display = 'block';
+        document.getElementById('contactSuccess').style.display = 'none';
+        return; // الخروج من الدالة دون إرسال البيانات
+    }
+
+    // إخفاء رسالة الخطأ إذا كانت البيانات كاملة
+    document.getElementById('contactError').style.display = 'none';
+
+    // إعداد المعرفات وبيانات الرسالة
+    const serviceID = 'service_x13gims';
+    const templateID = 'template_esrmjmv';
+
+    const templateParams = {
+        name: name,
+        email: email,
+        message: message
+    };
+
+    // إرسال الرسالة باستخدام EmailJS
+    emailjs.send(serviceID, templateID, templateParams)
+        .then(() => {
+            // عرض رسالة النجاح وإخفاء رسالة الخطأ
+            document.getElementById('contactSuccess').style.display = 'block';
+            document.getElementById('contactForm').reset();
+            document.getElementById('contactError').style.display = 'none';
+        }, (err) => {
+            // في حالة الفشل، إظهار رسالة خطأ فقط
+            console.error('خطأ في إرسال الرسالة:', err);
+        });
+});
+        </script>        
+
+        <section id="location">
+            <h2>موقعنا</h2>
+            <p>نحن موجودون في مدينة العيون. يمكنك التواصل معنا عبر االبريد الالكتروني salman47xfoor@gmail.com .</p>
+        </section>
+
+        <button id="scrollToTop" title="عودة إلى الأعلى">↑</button>
+    </main>
+
+    <script>
+        // إظهار الأقسام عند التمرير
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const scrollPosition = window.scrollY;
+
+            sections.forEach(section => {
+                if (scrollPosition + window.innerHeight > section.offsetTop + 100) {
+                    section.style.opacity = 1;
+                    section.style.transform = 'translateY(0)';
+                }
+            });
+
+            // إظهار زر العودة إلى الأعلى
+            const scrollToTopButton = document.getElementById('scrollToTop');
+            if (scrollPosition > 200) {
+                scrollToTopButton.style.display = 'block';
+            } else {
+                scrollToTopButton.style.display = 'none';
+            }
+        });
+
+        // نموذج تسجيل العامل
+        document.getElementById('workerRegisterForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('workerName').value;
+    const profession = document.getElementById('workerProfession').value;
+    const city = document.getElementById('workerCity').value;
+    const phone = document.getElementById('workerPhone').value;
+    const rating = document.getElementById('workerRating').value;
+
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!name || !profession || !city || !phone || !phoneRegex.test(phone)) {
+        document.getElementById('workerError').style.display = 'block';
+        return;
+    } else {
+        document.getElementById('workerError').style.display = 'none';
+    }
+
+    const workers = JSON.parse(localStorage.getItem('workers')) || [];
+    workers.push({ name, profession, city, phone, rating });
+    localStorage.setItem('workers', JSON.stringify(workers));
+
+    document.getElementById('workerSuccess').style.display = 'block';
+    setTimeout(() => {
+        document.getElementById('workerSuccess').style.display = 'none';
+    }, 3000);
+
+    document.getElementById('workerRegisterForm').reset();
+    document.getElementById('register').style.display = 'none';
+});
+
+        // وظيفة البحث عن العمال
+        function searchWorkers() {
+           const searchTerm = document.getElementById('searchTerm').value.toLowerCase();
+           const resultsContainer = document.getElementById('searchResults');
+           resultsContainer.innerHTML = '';
+
+           const workers = JSON.parse(localStorage.getItem('workers')) || [];
+           const filteredWorkers = workers.filter(worker => 
+             worker.profession.toLowerCase().includes(searchTerm)
+           );
+
+           if (filteredWorkers.length > 0) {
+               filteredWorkers.forEach((worker, index) => {
+                   const workerDiv = document.createElement('div');
+                   workerDiv.className = 'worker';
+
+                   // عرض معلومات العامل مع خانة تقييم
+                    workerDiv.innerHTML = 
+                                          `<strong>${worker.name}</strong> (${worker.profession})<br>
+                                           مدينة: ${worker.city}<br>
+                                           رقم الهاتف: ${worker.phone}<br>
+                                           التقييم الحالي: ${worker.rating || "لم يتم التقييم بعد"} من 5 ⭐<br>
+                      
+                                           <!-- خانة لاختيار التقييم -->
+                                           <label for="rating-${index}">قيم العامل (1-5):</label>
+                                           <select id="rating-${index}">
+                                               <option value="1">1 - ضعيف</option>
+                                               <option value="2">2 - مقبول</option>
+                                               <option value="3">3 - جيد</option>
+                                               <option value="4">4 - جيد جدًا</option>
+                                               <option value="5">5 - ممتاز</option>
+                                            </select>
+                
+                                            <!-- زر لحفظ التقييم -->
+                                            <button onclick="updateWorkerRating(${index})">حفظ التقييم</button>
+                     `;
+
+                     resultsContainer.appendChild(workerDiv);
+                });
+            } else {
+                resultsContainer.innerHTML = '<p>لا توجد نتائج مطابقة.</p>';
+            }
+        }
+
+        function updateWorkerRating(index) {
+             // جلب التقييم الجديد من القائمة المنسدلة
+             const newRating = document.getElementById(`rating-${index}`).value;
+
+             // جلب قائمة العمال من localStorage
+             const workers = JSON.parse(localStorage.getItem('workers')) || [];
+    
+             // تحديث التقييم للعامل المطلوب
+             workers[index].rating = newRating;
+
+             // إعادة حفظ القائمة مع التقييم الجديد في localStorage
+             localStorage.setItem('workers', JSON.stringify(workers));
+
+             // رسالة تأكيد أو إعادة تحميل للنتائج لتحديث التقييم
+             alert(`تم تحديث التقييم للعامل ${workers[index].name} إلى ${newRating} من 5`);
+             searchWorkers(); // إعادة استدعاء البحث لتحديث العرض
+        }
+
+        // التحقق من صحة النموذج للتواصل
+        document.getElementById('workerRegisterForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+             const name = document.getElementById('workerName').value;
+             const profession = document.getElementById('workerProfession').value;
+             const city = document.getElementById('workerCity').value;
+             const phone = document.getElementById('workerPhone').value;
+             const rating = document.getElementById('workerRating').value; // الحصول على التقييم
+
+             const phoneRegex = /^[0-9]{10}$/;
+             if (!name || !profession || !city || !phone || !phoneRegex.test(phone)) {
+                  document.getElementById('workerError').style.display = 'block';
+                 return;
+             } else {
+                   document.getElementById('workerError').style.display = 'none';
+             }
+
+                   const workers = JSON.parse(localStorage.getItem('workers')) || [];
+                   workers.push({ name, profession, city, phone, rating }); // إضافة التقييم للبيانات
+                   localStorage.setItem('workers', JSON.stringify(workers));
+
+                   document.getElementById('workerSuccess').style.display = 'block';
+                   setTimeout(() => {
+                       document.getElementById('workerSuccess').style.display = 'none';
+                   }, 3000);
+
+                   document.getElementById('workerRegisterForm').reset();
+                   document.getElementById('register').style.display = 'none';
+        });
+
+
+        // وظيفة لتبديل عرض النماذج
+        function toggleDisplay(id) {
+            const sections = ['register', 'search'];
+            sections.forEach(section => {
+                document.getElementById(section).style.display = section === id ? 'block' : 'none';
+            });
+        }
+
+        // وظيفة للعودة إلى الأعلى
+        document.getElementById('scrollToTop').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
